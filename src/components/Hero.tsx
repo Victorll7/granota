@@ -158,11 +158,10 @@ const Hero = () => {
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: isMobile ? 'flex-end' : 'center',
+        justifyContent: 'center',
         alignItems: 'center',
         textAlign: 'center',
-        zIndex: 10,
-        paddingBottom: isMobile ? '100px' : '0'
+        zIndex: 10
       }}>
         <motion.h1
           key={`title-${currentSlide}`}
