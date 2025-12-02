@@ -36,6 +36,15 @@ const Hero = () => {
 
 
 
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   return (
     <section id="home" style={{ position: 'relative', height: '100vh', overflow: 'hidden', backgroundColor: '#000' }}>
       
@@ -49,9 +58,10 @@ const Hero = () => {
         background: 'repeating-conic-gradient(from 0deg, transparent 0deg, transparent 10deg, rgba(20,20,20, 0.8) 10deg, rgba(20,20,20, 0.8) 20deg)',
         transform: 'translate(-50%, -50%)',
         animation: 'spin 20s linear infinite',
-        opacity: 0.3,
+        opacity: isMobile ? 0.15 : 0.3,
         zIndex: 1
       }} />
+
       <style>{`
         @keyframes spin {
           from { transform: translate(-50%, -50%) rotate(0deg); }
@@ -147,10 +157,11 @@ const Hero = () => {
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'center',
+        justifyContent: isMobile ? 'flex-end' : 'center',
         alignItems: 'center',
         textAlign: 'center',
-        zIndex: 10
+        zIndex: 10,
+        paddingBottom: isMobile ? '100px' : '0'
       }}>
         <motion.h1
           key={`title-${currentSlide}`}
@@ -158,11 +169,12 @@ const Hero = () => {
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.5, duration: 0.8 }}
           style={{
-            fontSize: 'clamp(2.5rem, 5vw, 5rem)',
+            fontSize: isMobile ? '2rem' : 'clamp(2.5rem, 5vw, 5rem)',
             marginBottom: '1rem',
             textShadow: '4px 4px 0 var(--color-accent)',
             fontStyle: 'italic',
-            transform: 'skew(-5deg)'
+            transform: 'skew(-5deg)',
+            width: '100%'
           }}
         >
           {slides[currentSlide].title}
@@ -174,7 +186,7 @@ const Hero = () => {
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.7, duration: 0.8 }}
           style={{
-            fontSize: 'clamp(1rem, 2vw, 1.5rem)',
+            fontSize: isMobile ? '1rem' : 'clamp(1rem, 2vw, 1.5rem)',
             color: 'rgba(255,255,255,0.9)',
             marginBottom: '2rem',
             maxWidth: '600px'
@@ -189,6 +201,10 @@ const Hero = () => {
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.9, duration: 0.8 }}
           className="btn"
+          style={{
+            fontSize: isMobile ? '1.2rem' : '1.5rem',
+            padding: isMobile ? '0.8rem 1.5rem' : '1rem 2rem'
+          }}
         >
           Reserva tu Cita
         </motion.a>
