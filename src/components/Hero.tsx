@@ -55,13 +55,12 @@ const Hero = () => {
         left: '50%',
         width: '200%',
         height: '200%',
-        background: 'repeating-conic-gradient(from 0deg, transparent 0deg, transparent 10deg, rgba(20,20,20, 0.8) 10deg, rgba(20,20,20, 0.8) 20deg)',
+        background: 'repeating-conic-gradient(from 0deg, transparent 0deg, transparent 10deg, rgba(30,30,30, 0.8) 10deg, rgba(30,30,30, 0.8) 20deg)',
         transform: 'translate(-50%, -50%)',
         animation: 'spin 20s linear infinite',
-        opacity: isMobile ? 0.15 : 0.3,
+        opacity: isMobile ? 0.4 : 0.3,
         zIndex: 1
       }} />
-
       <style>{`
         @keyframes spin {
           from { transform: translate(-50%, -50%) rotate(0deg); }
@@ -99,57 +98,59 @@ const Hero = () => {
         boxShadow: '0 0 10px rgba(255,255,255,0.2)'
       }} />
 
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={currentSlide}
-          initial={{ opacity: 0, scale: 1.2, filter: 'blur(10px)' }}
-          animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
-          exit={{ opacity: 0, scale: 0.9, filter: 'blur(10px)' }}
-          transition={{ duration: 0.8, ease: "circOut" }}
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            zIndex: 2,
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center'
-          }}
-        >
-          {/* Main Image with Glitch-ready container */}
-          <div style={{
-            position: 'relative',
-            width: '100%',
-            height: '100%',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center'
-          }}>
-             <motion.img 
-              src={slides[currentSlide].image}
-              alt="Hero"
-              style={{
-                maxWidth: '100%',
-                maxHeight: '100%',
-                objectFit: 'contain',
-                filter: 'drop-shadow(0 0 30px rgba(255, 0, 85, 0.3))'
-              }}
-              animate={{
-                x: [0, -5, 5, -5, 0],
-                filter: ["hue-rotate(0deg)", "hue-rotate(90deg)", "hue-rotate(-90deg)", "hue-rotate(0deg)"]
-              }}
-              transition={{
-                duration: 0.5,
-                times: [0, 0.2, 0.4, 0.6, 1],
-                repeat: 0,
-                delay: 0.1
-              }}
-             />
-          </div>
-        </motion.div>
-      </AnimatePresence>
+      {!isMobile && (
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentSlide}
+            initial={{ opacity: 0, scale: 1.2, filter: 'blur(10px)' }}
+            animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+            exit={{ opacity: 0, scale: 0.9, filter: 'blur(10px)' }}
+            transition={{ duration: 0.8, ease: "circOut" }}
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              zIndex: 2,
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}
+          >
+            {/* Main Image with Glitch-ready container */}
+            <div style={{
+              position: 'relative',
+              width: '100%',
+              height: '100%',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}>
+               <motion.img 
+                src={slides[currentSlide].image}
+                alt="Hero"
+                style={{
+                  maxWidth: '100%',
+                  maxHeight: '100%',
+                  objectFit: 'contain',
+                  filter: 'drop-shadow(0 0 30px rgba(255, 0, 85, 0.3))'
+                }}
+                animate={{
+                  x: [0, -5, 5, -5, 0],
+                  filter: ["hue-rotate(0deg)", "hue-rotate(90deg)", "hue-rotate(-90deg)", "hue-rotate(0deg)"]
+                }}
+                transition={{
+                  duration: 0.5,
+                  times: [0, 0.2, 0.4, 0.6, 1],
+                  repeat: 0,
+                  delay: 0.1
+                }}
+               />
+            </div>
+          </motion.div>
+        </AnimatePresence>
+      )}
 
       {/* Content Overlay */}
       <div className="container" style={{
