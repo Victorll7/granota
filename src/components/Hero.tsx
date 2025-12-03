@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-
 import logo from '../images/logo.png';
 
 const Hero = () => {
@@ -14,12 +13,12 @@ const Hero = () => {
       subtitle: "Diseños personalizados que cuentan tu historia"
     },
     {
-      title: "Precisión y Pasión",
-      subtitle: "Estudio profesional y seguro"
+      title: "Del Manga a la Realidad",
+      subtitle: "Tus personajes favoritos inmortalizados con técnica experta"
     },
     {
-      title: "Diseños Atemporales",
-      subtitle: "Creando obras maestras"
+      title: "Tu Pasión Hecha Tinta",
+      subtitle: "La esencia del anime en cada trazo"
     }
   ];
 
