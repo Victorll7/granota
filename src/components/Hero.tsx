@@ -6,6 +6,22 @@ import logo from '../images/logo.png';
 const Hero = () => {
   const [showIntro, setShowIntro] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  const slides = [
+    {
+      title: "Arte en la Piel",
+      subtitle: "Diseños personalizados que cuentan tu historia"
+    },
+    {
+      title: "Precisión y Pasión",
+      subtitle: "Estudio profesional y seguro"
+    },
+    {
+      title: "Diseños Atemporales",
+      subtitle: "Creando obras maestras"
+    }
+  ];
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -23,6 +39,16 @@ const Hero = () => {
       return () => clearTimeout(timer);
     }
   }, [showIntro]);
+
+  // Auto-rotate slides after intro
+  useEffect(() => {
+    if (!showIntro) {
+      const timer = setInterval(() => {
+        setCurrentSlide((prev) => (prev + 1) % slides.length);
+      }, 5000);
+      return () => clearInterval(timer);
+    }
+  }, [showIntro, slides.length]);
 
   return (
     <section id="home" style={{ position: 'relative', height: '100vh', overflow: 'hidden', backgroundColor: '#000' }}>
@@ -151,7 +177,7 @@ const Hero = () => {
                 width: '100%'
               }}
             >
-              Arte en la Piel
+              {slides[currentSlide].title}
             </h1>
             
             <p
@@ -162,7 +188,7 @@ const Hero = () => {
                 maxWidth: '600px'
               }}
             >
-              Diseños personalizados que cuentan tu historia
+              {slides[currentSlide].subtitle}
             </p>
 
             <a
