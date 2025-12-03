@@ -1,41 +1,10 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-import img1 from '../images/ANIME.jpg';
-import img2 from '../images/CARTOON.jpg';
-import img3 from '../images/COMIC.jpg';
+import logo from '../images/logo.png';
 
 const Hero = () => {
-  const [currentSlide, setCurrentSlide] = useState(0);
-
-  // Placeholder images - replace with actual tattoo work later
-  const slides = [
-    {
-      image: img1,
-      title: "Arte en la Piel",
-      subtitle: "Diseños personalizados que cuentan tu historia"
-    },
-    {
-      image: img2,
-      title: "Precisión y Pasión",
-      subtitle: "Estudio profesional y seguro"
-    },
-    {
-      image: img3,
-      title: "Diseños Atemporales",
-      subtitle: "Creando obras maestras"
-    }
-  ];
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 5000);
-    return () => clearInterval(timer);
-  }, [slides.length]);
-
-
-
+  const [showIntro, setShowIntro] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -45,22 +14,34 @@ const Hero = () => {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
+  // Auto-transition from intro to hero content
+  useEffect(() => {
+    if (showIntro) {
+      const timer = setTimeout(() => {
+        setShowIntro(false);
+      }, 3500); // 3.5 seconds total intro duration
+      return () => clearTimeout(timer);
+    }
+  }, [showIntro]);
+
   return (
     <section id="home" style={{ position: 'relative', height: '100vh', overflow: 'hidden', backgroundColor: '#000' }}>
       
-      {/* Anime Speed Lines Background */}
-      <div style={{
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        width: '200%',
-        height: '200%',
-        background: 'repeating-conic-gradient(from 0deg, transparent 0deg, transparent 10deg, rgba(30,30,30, 0.8) 10deg, rgba(30,30,30, 0.8) 20deg)',
-        transform: 'translate(-50%, -50%)',
-        animation: 'spin 20s linear infinite',
-        opacity: isMobile ? 0.4 : 0.3,
-        zIndex: 1
-      }} />
+      {/* Anime Speed Lines Background - Hidden during intro */}
+      {!showIntro && (
+        <div style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          width: '200%',
+          height: '200%',
+          background: 'repeating-conic-gradient(from 0deg, transparent 0deg, transparent 10deg, rgba(30,30,30, 0.8) 10deg, rgba(30,30,30, 0.8) 20deg)',
+          transform: 'translate(-50%, -50%)',
+          animation: 'spin 20s linear infinite',
+          opacity: isMobile ? 0.4 : 0.3,
+          zIndex: 1
+        }} />
+      )}
       <style>{`
         @keyframes spin {
           from { transform: translate(-50%, -50%) rotate(0deg); }
@@ -98,145 +79,105 @@ const Hero = () => {
         boxShadow: '0 0 10px rgba(255,255,255,0.2)'
       }} />
 
-      {!isMobile && (
-        <AnimatePresence mode="wait">
+      <AnimatePresence mode="wait">
+        {showIntro ? (
+          // Logo Intro Animation
           <motion.div
-            key={currentSlide}
-            initial={{ opacity: 0, scale: 1.2, filter: 'blur(10px)' }}
-            animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
-            exit={{ opacity: 0, scale: 0.9, filter: 'blur(10px)' }}
-            transition={{ duration: 0.8, ease: "circOut" }}
+            key="intro"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
             style={{
               position: 'absolute',
               top: 0,
               left: 0,
               width: '100%',
               height: '100%',
-              zIndex: 2,
               display: 'flex',
               justifyContent: 'center',
-              alignItems: 'center'
+              alignItems: 'center',
+              zIndex: 20
             }}
           >
-            {/* Main Image with Glitch-ready container */}
-            <div style={{
+            <motion.img
+              src={logo}
+              alt="GRANOTATATTOO"
+              initial={{ scale: 0.5, opacity: 0, filter: 'blur(20px)' }}
+              animate={{ 
+                scale: [0.5, 1.2, 1],
+                opacity: [0, 1, 1, 1, 0],
+                filter: ['blur(20px)', 'blur(0px)', 'blur(0px)', 'blur(0px)', 'blur(10px)']
+              }}
+              transition={{
+                duration: 3.5,
+                times: [0, 0.23, 0.71, 0.86, 1],
+                ease: "easeInOut"
+              }}
+              style={{
+                maxWidth: isMobile ? '90%' : '80%',
+                maxHeight: isMobile ? '60%' : '70%',
+                objectFit: 'contain',
+                filter: 'drop-shadow(0 0 40px rgba(255, 0, 85, 0.6))'
+              }}
+            />
+          </motion.div>
+        ) : (
+          // Hero Content
+          <motion.div
+            key="hero"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8 }}
+            className="container"
+            style={{
               position: 'relative',
-              width: '100%',
               height: '100%',
               display: 'flex',
+              flexDirection: 'column',
               justifyContent: 'center',
-              alignItems: 'center'
-            }}>
-               <motion.img 
-                src={slides[currentSlide].image}
-                alt="Hero"
-                style={{
-                  maxWidth: '100%',
-                  maxHeight: '100%',
-                  objectFit: 'contain',
-                  filter: 'drop-shadow(0 0 30px rgba(255, 0, 85, 0.3))'
-                }}
-                animate={{
-                  x: [0, -5, 5, -5, 0],
-                  filter: ["hue-rotate(0deg)", "hue-rotate(90deg)", "hue-rotate(-90deg)", "hue-rotate(0deg)"]
-                }}
-                transition={{
-                  duration: 0.5,
-                  times: [0, 0.2, 0.4, 0.6, 1],
-                  repeat: 0,
-                  delay: 0.1
-                }}
-               />
-            </div>
-          </motion.div>
-        </AnimatePresence>
-      )}
-
-      {/* Content Overlay */}
-      <div className="container" style={{
-        position: 'relative',
-        height: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        textAlign: 'center',
-        zIndex: 10
-      }}>
-        <motion.h1
-          key={`title-${currentSlide}`}
-          initial={{ y: 30, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.5, duration: 0.8 }}
-          style={{
-            fontSize: isMobile ? '2rem' : 'clamp(2.5rem, 5vw, 5rem)',
-            marginBottom: '1rem',
-            textShadow: '4px 4px 0 var(--color-accent)',
-            fontStyle: 'italic',
-            transform: 'skew(-5deg)',
-            width: '100%'
-          }}
-        >
-          {slides[currentSlide].title}
-        </motion.h1>
-        
-        <motion.p
-          key={`sub-${currentSlide}`}
-          initial={{ y: 30, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.7, duration: 0.8 }}
-          style={{
-            fontSize: isMobile ? '1rem' : 'clamp(1rem, 2vw, 1.5rem)',
-            color: 'rgba(255,255,255,0.9)',
-            marginBottom: '2rem',
-            maxWidth: '600px'
-          }}
-        >
-          {slides[currentSlide].subtitle}
-        </motion.p>
-
-        <motion.a
-          href="#contact"
-          initial={{ y: 30, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.9, duration: 0.8 }}
-          className="btn"
-          style={{
-            fontSize: isMobile ? '1.2rem' : '1.5rem',
-            padding: isMobile ? '0.8rem 1.5rem' : '1rem 2rem'
-          }}
-        >
-          Reserva tu Cita
-        </motion.a>
-      </div>
-
-
-
-      {/* Indicators */}
-      <div style={{
-        position: 'absolute',
-        bottom: '30px',
-        left: '50%',
-        transform: 'translateX(-50%)',
-        display: 'flex',
-        gap: '15px',
-        zIndex: 20
-      }}>
-        {slides.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => setCurrentSlide(index)}
-            style={{
-              width: '40px',
-              height: '6px',
-              backgroundColor: index === currentSlide ? 'var(--color-accent)' : 'rgba(255,255,255,0.2)',
-              transition: 'all 0.3s ease',
-              transform: 'skew(-20deg)',
-              boxShadow: index === currentSlide ? '0 0 10px var(--color-accent)' : 'none'
+              alignItems: 'center',
+              textAlign: 'center',
+              zIndex: 10
             }}
-          />
-        ))}
-      </div>
+          >
+            <h1
+              style={{
+                fontSize: isMobile ? '2rem' : 'clamp(2.5rem, 5vw, 5rem)',
+                marginBottom: '1rem',
+                textShadow: '4px 4px 0 var(--color-accent)',
+                fontStyle: 'italic',
+                transform: 'skew(-5deg)',
+                width: '100%'
+              }}
+            >
+              Arte en la Piel
+            </h1>
+            
+            <p
+              style={{
+                fontSize: isMobile ? '1rem' : 'clamp(1rem, 2vw, 1.5rem)',
+                color: 'rgba(255,255,255,0.9)',
+                marginBottom: '2rem',
+                maxWidth: '600px'
+              }}
+            >
+              Diseños personalizados que cuentan tu historia
+            </p>
+
+            <a
+              href="#contact"
+              className="btn"
+              style={{
+                fontSize: isMobile ? '1.2rem' : '1.5rem',
+                padding: isMobile ? '0.8rem 1.5rem' : '1rem 2rem'
+              }}
+            >
+              Reserva tu Cita
+            </a>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 };
