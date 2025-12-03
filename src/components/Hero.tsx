@@ -167,29 +167,43 @@ const Hero = () => {
               zIndex: 10
             }}
           >
-            <h1
-              style={{
-                fontSize: isMobile ? '2rem' : 'clamp(2.5rem, 5vw, 5rem)',
-                marginBottom: '1rem',
-                textShadow: '4px 4px 0 var(--color-accent)',
-                fontStyle: 'italic',
-                transform: 'skew(-5deg)',
-                width: '100%'
-              }}
-            >
-              {slides[currentSlide].title}
-            </h1>
+            <AnimatePresence mode="wait">
+              <motion.h1
+                key={`title-${currentSlide}`}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.5 }}
+                style={{
+                  fontSize: isMobile ? '2rem' : 'clamp(2.5rem, 5vw, 5rem)',
+                  marginBottom: '1rem',
+                  textShadow: '4px 4px 0 var(--color-accent)',
+                  fontStyle: 'italic',
+                  transform: 'skew(-5deg)',
+                  width: '100%'
+                }}
+              >
+                {slides[currentSlide].title}
+              </motion.h1>
+            </AnimatePresence>
             
-            <p
-              style={{
-                fontSize: isMobile ? '1rem' : 'clamp(1rem, 2vw, 1.5rem)',
-                color: 'rgba(255,255,255,0.9)',
-                marginBottom: '2rem',
-                maxWidth: '600px'
-              }}
-            >
-              {slides[currentSlide].subtitle}
-            </p>
+            <AnimatePresence mode="wait">
+              <motion.p
+                key={`subtitle-${currentSlide}`}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+                style={{
+                  fontSize: isMobile ? '1rem' : 'clamp(1rem, 2vw, 1.5rem)',
+                  color: 'rgba(255,255,255,0.9)',
+                  marginBottom: '2rem',
+                  maxWidth: '600px'
+                }}
+              >
+                {slides[currentSlide].subtitle}
+              </motion.p>
+            </AnimatePresence>
 
             <a
               href="#contact"
