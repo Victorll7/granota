@@ -44,7 +44,7 @@ const Contact = () => {
                 <Phone size={24} color="var(--color-accent)" />
                 <div>
                   <p style={{ fontWeight: 'bold' }}>Teléfono</p>
-                  <p style={{ color: 'var(--color-text-muted)' }}>+34 666 777 888</p>
+                  <p style={{ color: 'var(--color-text-muted)' }}>+34 666 288 992</p>
                 </div>
               </div>
 
